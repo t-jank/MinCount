@@ -34,8 +34,11 @@ def md5(x):
 def sha256(x):
     return int(hashlib.sha256(str(x).encode()).hexdigest(),16)/2**256
 
+def randsid8192(x):
+    random.seed(x)
+    return random.randrange(1000000)%8192/8192
 
-k=100
+k=200
 '''
 e=1
 multizbior=[]
@@ -52,7 +55,7 @@ multizbior=[1]
 q=1
 gut=0
 bad=0
-zakres=1000
+zakres=10000
 while len(multizbior)<zakres:
     for j in range(0,len(multizbior)):
         multizbior[j] = multizbior[j] + q
@@ -67,7 +70,7 @@ while len(multizbior)<zakres:
     plt.scatter(len(multizbior),wynik, color='k', marker='.')
 print('k =',k,'; Procent przypadkow |nzd/n -1|<10%:',gut/(bad+gut) *100,'%')
 plt.xlim([k,zakres])
-plt.ylim(0.6,1.4)
+plt.ylim(0.7,1.3)
 plt.xlabel('n')
 plt.ylabel('nzd/n')
 plt.show()
