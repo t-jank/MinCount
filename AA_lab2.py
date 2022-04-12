@@ -3,21 +3,21 @@ import matplotlib.pyplot as plt
 import math
 import hashlib
 
-######## zadanie 1 #########
+######## zadanie 5 #########
 
 def MinCount(k,h,multizbior):
     M=[]
     for i in range(0,k):
         M.append(1)
     for x in range(0,len(multizbior)):
-        if h(x) < M[k-1] and h(x) not in M:
-            M[k-1]=h(x)
+        if h(multizbior[x]) < M[k-1] and h(multizbior[x]) not in M:
+            M[k-1]=h(multizbior[x])
             M.sort()
     if M[k-1]==1:
         i=k
         while M[i-1]==1 and i>0:
             i-=1
-        nzd = M[i-1]
+        nzd = i
         return nzd
     else:
         nzd = (k-1)/M[k-1]
@@ -27,6 +27,8 @@ def randsid(x):
     random.seed(x)
     return random.random()
 
+
+######## zadanie 6 #########
 
 def md5(x):
     return int(hashlib.md5(str(x).encode()).hexdigest(),16)/2**128
@@ -38,7 +40,7 @@ def randsid8192(x):
     random.seed(x)
     return random.randrange(1000000)%8192/8192
 
-k=200
+k=2
 '''
 e=1
 multizbior=[]
@@ -61,15 +63,15 @@ while len(multizbior)<zakres:
         multizbior[j] = multizbior[j] + q
     multizbior.append(multizbior[len(multizbior)-1]+1)
     q+=1
-    #print('n =',len(multizbior),'nzd:',MinCount(k,randsid,multizbior))
-    wynik = MinCount(k,sha256,multizbior)/len(multizbior)
-    if j>k and abs(wynik-1)<0.1:
+   # print('n =',len(multizbior),'nzd:',MinCount(k,randsid,multizbior))
+    wynik = MinCount(k,randsid,multizbior)/len(multizbior)
+    if abs(wynik-1)<0.1:
         gut+=1
-    elif j>k and abs(wynik-1)>=0.1:
+    elif abs(wynik-1)>=0.1:
         bad+=1
     plt.scatter(len(multizbior),wynik, color='k', marker='.')
 print('k =',k,'; Procent przypadkow |nzd/n -1|<10%:',gut/(bad+gut) *100,'%')
-plt.xlim([k,zakres])
+plt.xlim([0,zakres])
 plt.ylim(0.7,1.3)
 plt.xlabel('n')
 plt.ylabel('nzd/n')
