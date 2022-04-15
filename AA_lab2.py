@@ -2,6 +2,7 @@ import random
 import matplotlib.pyplot as plt
 import math
 import hashlib
+import numpy as np
 
 ######## zadanie 5 #########
 
@@ -40,7 +41,6 @@ def randsid8192(x):
     random.seed(x)
     return random.randrange(1000000)%8192/8192
 
-k=2
 '''
 e=1
 multizbior=[]
@@ -50,14 +50,15 @@ for j in range(1,10000): # mozna tez bez usuwania tylko dodajac wszedzie 1, +1 w
     MinCount(k,randsid,multizbior)
     multizbior.clear()
     e=e+j
-
 '''
 multizbior=[1]
 #print('n =',len(multizbior),'nzd:',MinCount(100,randsid,multizbior))
 q=1
 gut=0
 bad=0
-zakres=10000
+var=0
+k=200
+zakres=1000
 while len(multizbior)<zakres:
     for j in range(0,len(multizbior)):
         multizbior[j] = multizbior[j] + q
@@ -65,14 +66,41 @@ while len(multizbior)<zakres:
     q+=1
    # print('n =',len(multizbior),'nzd:',MinCount(k,randsid,multizbior))
     wynik = MinCount(k,randsid,multizbior)/len(multizbior)
-    if abs(wynik-1)<0.1:
-        gut+=1
-    elif abs(wynik-1)>=0.1:
-        bad+=1
+    # zliczanie do 5c:    
+    #if abs(wynik-1)<0.1:
+    #    gut+=1
+    #elif abs(wynik-1)>=0.1:
+    #    bad+=1
+    #wariancja do 7:
+    var += (wynik-1)**2
     plt.scatter(len(multizbior),wynik, color='k', marker='.')
-print('k =',k,'; Procent przypadkow |nzd/n -1|<10%:',gut/(bad+gut) *100,'%')
+#print('k =',k,'; Procent przypadkow |nzd/n -1|<10%:',gut/(bad+gut) *100,'%')
 plt.xlim([0,zakres])
-plt.ylim(0.7,1.3)
 plt.xlabel('n')
 plt.ylabel('nzd/n')
+#plt.ylim(0,1.8)
+
+
+######## zadanie 7 #########
+
+alfa = 0.05
+
+#Czebyszew:
+delta = math.sqrt(var/zakres/alfa)
+print('Czebyszew:  Pr[',round(1-delta,2),'< nzd/n <',round(1+delta,2),'] >',1-alfa)
+x = np.linspace(0,zakres)
+y = 0*x+1+delta
+plt.plot(x, y, 'b', label='Czebyszew')
+y = 0*x+1-delta
+plt.plot(x, y, 'b')
+
+#Rzeczywistosc:
+ilepoza=alfa*zakres
+
+
+#Chernoff:
+################
+#################
+
+plt.legend(loc=4)
 plt.show()
