@@ -59,6 +59,11 @@ bad=0
 var=0
 k=200
 zakres=1000
+alfa = 0.05
+ilepoza=alfa*zakres
+tabpoza=[]
+for u in range (0,int(ilepoza)+1):
+    tabpoza.append(-1)
 while len(multizbior)<zakres:
     for j in range(0,len(multizbior)):
         multizbior[j] = multizbior[j] + q
@@ -66,6 +71,10 @@ while len(multizbior)<zakres:
     q+=1
    # print('n =',len(multizbior),'nzd:',MinCount(k,randsid,multizbior))
     wynik = MinCount(k,randsid,multizbior)/len(multizbior)
+    #do 7 rzeczywistego:
+    if abs(wynik-1)>tabpoza[0]:
+        tabpoza[0]=abs(wynik-1)
+        tabpoza.sort()
     # zliczanie do 5c:    
     #if abs(wynik-1)<0.1:
     #    gut+=1
@@ -83,8 +92,6 @@ plt.ylabel('nzd/n')
 
 ######## zadanie 7 #########
 
-alfa = 0.05
-
 #Czebyszew:
 delta = math.sqrt(var/zakres/alfa)
 print('Czebyszew:  Pr[',round(1-delta,2),'< nzd/n <',round(1+delta,2),'] >',1-alfa)
@@ -95,8 +102,12 @@ y = 0*x+1-delta
 plt.plot(x, y, 'b')
 
 #Rzeczywistosc:
-ilepoza=alfa*zakres
-
+deltarzecz=tabpoza[0]
+print('Rzeczywistosc:  Pr[',round(1-deltarzecz,2),'< nzd/n <',round(1+deltarzecz,2),'] >',1-alfa)
+y = 0*x+1+deltarzecz
+plt.plot(x, y, 'r', label='Rzeczywistosc')
+y = 0*x+1-deltarzecz
+plt.plot(x, y, 'r')
 
 #Chernoff:
 ################
