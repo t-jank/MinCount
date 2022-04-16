@@ -110,8 +110,18 @@ y = 0*x+1-deltarzecz
 plt.plot(x, y, 'r')
 
 #Chernoff:
-################
-#################
+if alfa == 0.05:
+    deltachern = 0.195699938834368
+elif alfa == 0.01:
+    deltachern = 0.249265657097999
+elif alfa == 0.005:
+    deltachern = 0.560002658800619 # z wolframa:
+# e^(200*delta/(1+delta))*(1-(delta/(1+delta)))^200 + e^(-delta*200/(delta-1))*(1-(-delta/(delta-1)))^200 = 0.05
+print('Chernoff:  Pr[',round(1-deltachern,2),'< nzd/n <',round(1+deltachern,2),'] >',1-alfa)
+y = 0*x+1+deltachern
+plt.plot(x, y, 'g', label='Chernoff')
+y = 0*x+1-deltachern
+plt.plot(x, y, 'g')
 
 plt.legend(loc=4)
 plt.show()
